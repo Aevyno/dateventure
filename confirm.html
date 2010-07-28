@@ -1,0 +1,64 @@
+{% extends "index.html" %}
+{% block content %}
+<script type="text/javascript">
+
+function validate()
+{
+    if(validateFormFields($("#confirm")))
+    {
+        document.confirm.submit();
+    }
+}
+
+</script>
+
+<form style="margin: 0px; padding: 0px;" method="post" id="confirm" name="confirm" action="confirmed" enctype="multipart/form-data">
+<div class="zc-formheader"><span elname="zc-formNameEl"><label class="zc-formtitle">Vahvista vastaus</label></span></div>
+<table class="zc-formtable zc-appformtable" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+
+<input type="hidden" name="key" value="{{key}}">
+
+<tr>
+<td class="zc-labelheader" style="width: auto;"><label>Ajankohta</label></td>
+<td class="zc-inputheader" style="width: auto;">{{datetime}}</td>
+</tr>
+
+<tr> 
+<td class="zc-labelheader" style="width: 150px;"><label>Paikka</label></td>
+<td class="zc-inputheader" style="width: auto;">{{location}}</td>
+</tr>
+
+<tr> 
+<td class="zc-labelheader" style="width: 150px;"><label>Kumppanin ikä</label></td>
+<td class="zc-inputheader" style="width: auto;">{{age}}</td>
+</tr>
+
+<tr> 
+<td class="zc-labelheader" style="width: 150px;"><label>Kumppanin sukupuoli</label></td>
+<td class="zc-inputheader" style="width: auto;">{{gender}}</td>
+</tr>
+
+<tr>
+<td class="zc-labelheader" style="width: 150px;"><label>Lyhyt kuvaus itsestäsi</label></td>
+
+<td class="zc-inputheader" style="width: auto;"><input class="zc-inputtext" id="description" name="description" maxlength="50" value="" type="text" mandatory="true"><p id="vKuvaus_Error"></p></td>
+</tr>
+
+
+<tr>
+<td class="zc-button-row" style="border:medium none;"/>
+<td class="zc-button-row" style="border:medium none; text-align:left;" >
+<input type="button" class="zc-formbutton"value="Submit" onClick="validate()">
+<input class="zc-formbutton" type="reset" value="Reset"/>
+</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+
+</form>
+
+
+{% endblock %}

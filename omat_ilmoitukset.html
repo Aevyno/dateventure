@@ -1,0 +1,97 @@
+{% extends "index.html" %}
+{% block content %}
+<script>
+function post(key) {
+
+    var form = document.createElement("form");
+    form.setAttribute("method", "post");
+    form.setAttribute("action", "confirmdelete");
+
+    var hiddenField = document.createElement("input");
+    hiddenField.setAttribute("type", "hidden");
+    hiddenField.setAttribute("name", "key");
+    hiddenField.setAttribute("value", key);
+    form.appendChild(hiddenField);
+
+    document.body.appendChild(form);    
+    form.submit();
+}
+</script>
+
+
+<div class="zc-formcontainer" style="width: auto;">
+
+<div class="zc-formheader">
+<span elname="zc-formNameEl"><label class="zc-formtitle">Lisäämäni ilmoitukset</label></span>
+<div class="question">Vihreällä taustalla näkyviin ilmoituksiin on vastattu.</div>
+</div>
+
+
+<div class="zc-formcontent zc-appformcontent">
+<table class="zc-formtable zc-appformtable" border="0" cellspacing="0">
+<tbody>
+<thead>
+<tr class="zc-viewrowheader" height="25">
+<td align="center"><b>Etsin</b></td>
+<td align="center"><b>Paikka</b></td>
+<td align="center"><b>Päivämäärä & Aika</b></td>
+<td align="center"><b>Kuvaus</b></td>
+<td align="center"><b>Vastaajan Kuvaus</b></td>
+<td align="center"></td>
+</tr>
+
+
+{% for x in records %}
+<tr class="zc-viewrow zc-row-1"
+{% if x.Vastattu %} style="background-color:#D3FFC4;"{% endif %}
+>
+<td align="center"> {{x.Etsin }} </td>
+<td align="center"> {{x.Paikka }}</td>
+<td align="center"> {{x.Datetime }}</td>
+<td align="center"> {{x.Kuvaus }}</td>
+<td align="center"> {% if x.Vastattu %}{{x.vKuvaus }}{% else %}.{% endif %} </td>
+<td align="center"> <a href="#" onClick="post('{{x.key}}')" class="zc-formbutton"> Poista </a></td>
+
+</tr>
+{% endfor %}
+</thead>
+</tbody>
+</table>
+</div>
+<br />
+
+<div class="zc-formheader">
+<span elname="zc-formNameEl"><label class="zc-formtitle">Ilmoitukset, joihin olen vastannut</label></span>
+</div>
+
+<div class="zc-formcontent zc-appformcontent">
+<table class="zc-formtable zc-appformtable" border="0" cellspacing="0">
+<tbody>
+<thead>
+<tr class="zc-viewrowheader" height="25">
+<td align="center"><b>Ilmoittaja</b></td>
+<td align="center"><b>Paikka</b></td>
+<td align="center"><b>Päivämäärä & Aika</b></td>
+<td align="center"><b>Ilmoittajan Kuvaus</b></td>
+<td align="center"><b>Oma kuvaukseni </b></td>
+</tr>
+
+{% for y in responses %}
+<tr class="zc-viewrow zc-row-1">
+<td align="center"> {{y.Olen }} </td>
+<td align="center"> {{y.Paikka }}</td>
+<td align="center"> {{y.Datetime }}</td>
+<td align="center"> {{y.Kuvaus }}</td>
+<td align="center"> {{y.vKuvaus }}</td>
+</tr>
+{% endfor %}
+
+</thead>
+</tbody>
+</table>
+</div>
+
+</div>
+
+
+{% endblock %}
