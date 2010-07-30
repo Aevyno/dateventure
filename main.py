@@ -9,7 +9,6 @@ from google.appengine.ext.webapp import template
 from google.appengine.api import users
 from google.appengine.api import mail
 from google.appengine.ext.db import Model
-#from dateventure import selaus
 from dateventure import ilmoitus
 from dateventure import alignment
 from dateventure import palaute
@@ -20,9 +19,7 @@ class MainPage(webapp.RequestHandler):
         global ilmoitus_Olen
         if user:
             template_values={
-
-            'Olen': alignment ,
-
+				'Olen': alignment ,
                 "nickname":user.nickname(),
                 "url":users.create_logout_url("/")
             }
@@ -39,12 +36,17 @@ class MainPage(webapp.RequestHandler):
 class Showetusivu(webapp.RequestHandler):
     def get(self):
         user = users.get_current_user()
+        
+        ilmoitusVar = ilmoitus.gql("WHERE Vastattu = :y AND Poistettu = :y", y = False)
+        records = ilmoitusVar.fetch(limit=10)
+        
         if user:
-          template_values={"url":users.create_logout_url("/")}
+          template_values={'records': records, "url":users.create_logout_url("/")}
         else:
-          template_values={"loginurl":users.create_login_url("/")}
-        path = os.path.join(os.path.dirname(__file__),'etusivu.html')
-        self.response.out.write(template.render(path,template_values))         
+          template_values={'records': records, "loginurl":users.create_login_url("/")}
+        
+        path = os.path.join(os.path.dirname(__file__),'mainpage.html')
+        self.response.out.write(template.render(path,template_values))        
 
 class Showilmoitus(webapp.RequestHandler):
     def get(self):
@@ -168,24 +170,6 @@ class Showilmoitus_View(webapp.RequestHandler):
           path=os.path.join(os.path.dirname(__file__),'ilmoitus_View.html')
           self.response.out.write(template.render(path,template_values))
           
-#uusi etusivu
-#hakee kymmenen ensin vastaan tulevaa ilmoitusta joihin ei ole vastattu tai niitä ei ole poistettu
-class Etusivu(webapp.RequestHandler):
-    def get(self):
-        user = users.get_current_user()
-        
-        ilmoitusVar = ilmoitus.gql("WHERE Vastattu = :y AND Poistettu = :y", y = False)
-        records = ilmoitusVar.fetch(limit=10)
-        
-        if user:
-          template_values={'records': records, "url":users.create_logout_url("/")}
-        else:
-          template_values={'records': records, "loginurl":users.create_login_url("/")}
-        
-        path = os.path.join(os.path.dirname(__file__),'mainpage.html')
-        self.response.out.write(template.render(path,template_values)) 
-
-
 class sortilmoitus_ViewAction(webapp.RequestHandler):
     def post(self):
         user = users.get_current_user()
@@ -349,7 +333,7 @@ class ilmoitusVahvistettu(webapp.RequestHandler):
 
 def main():
     application = webapp.WSGIApplication(
-                [('/', MainPage),
+        [('/', MainPage),
 		('/palaute', palaute_View),
 		('/addpalaute', palauteAction),
 		('/kiitos', kiitos),
@@ -357,17 +341,16 @@ def main():
 		('/ukk', ukk),
 		('/confirm', vahvistaIlmoituksenAvaus),
 		('/confirmed', ilmoitusVahvistettu),
-                ('/addilmoitus',ilmoitusAction),
-                ('/showilmoitus',Showilmoitus),
-                ('/showilmoitus_View',Showilmoitus_View),
-                ('/sortilmoitus_View',sortilmoitus_ViewAction),
-                ('/searchilmoitus_View',searchilmoitus_ViewAction),
+        ('/addilmoitus',ilmoitusAction),
+        ('/showilmoitus',Showilmoitus),
+        ('/showilmoitus_View',Showilmoitus_View),
+        ('/sortilmoitus_View',sortilmoitus_ViewAction),
+        ('/searchilmoitus_View',searchilmoitus_ViewAction),
 		('/showomat_ilmoitukset',Showomat_ilmoitukset),
 		('/delete', delete),
 		('/confirmdelete', confirmDelete),
-		('/showetusivu',Showetusivu),
-        ('/etusivu', Etusivu)],
-                debug=True)
+		('/showetusivu',Showetusivu)],
+        debug=True)
 
     wsgiref.handlers.CGIHandler().run(application)
 

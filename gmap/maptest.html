@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<style type="text/css">
+  html { height: 100% }
+  body { height: 100%; margin: 0px; padding: 0px }
+  #map_canvas { height: 100% }
+</style>
+<script type="text/javascript"
+    src="http://maps.google.com/maps/api/js?sensor=false">
+</script>
+<script type="text/javascript">
+
+var map;
+
+function initialize()
+{
+  var myLatlng = new google.maps.LatLng(60.449454,22.269287);
+  var myOptions = {
+    zoom: 12,
+	navigationControl: true,
+	mapTypeControl: false,
+	scaleControl: true,
+    center: myLatlng,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  }
+  map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+  
+  setMarkers();
+  google.maps.event.addListener(marker, 'click', function(){
+	  markerSelected();
+  });
+}
+
+/*
+ * Markers to be set
+ * TODO: read info from a file or database
+ */
+function setMarkers()
+{
+	placeMarker(map, 60.463644, 22.291857, "Three Beers");
+	placeMarker(map, 60.455229, 22.286196, "Proffan Kellari");
+}
+
+/*
+ * Places marker whit latitude, longitude and title to map
+ * TODO: add infoWindow
+ */
+function placeMarker(map, lat, lon, title)
+{
+	var ll = new google.maps.LatLng(lat, lon);
+	var place = new google.maps.Marker({
+		position: ll,
+		map: map,
+		title: title
+	});
+	google.maps.event.addListener(place, 'click', function(){markerSelected(place, title)});	
+}
+
+/*
+ * Sets place as meeting place
+ */
+function markerSelected(place)
+{
+	//set location content to place
+}
+
+</script>
+</head>
+<body onload="initialize()">
+  <div id="map_canvas" style="width:100%; height:100%"></div>
+</body>
+</html>

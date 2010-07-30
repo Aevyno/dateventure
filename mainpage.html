@@ -88,8 +88,8 @@ function searchRec()
 }
 function cancelSearch()
 {
-        document.getElementById("searchRow").style.display="none";
-        document.getElementById("searchButtonRow").style.display="none";
+    document.getElementById("searchRow").style.display="none";
+    document.getElementById("searchButtonRow").style.display="none";
 }
 
 
@@ -117,12 +117,12 @@ function post(key) {
 
 {% for x in records %}
 <tr class="zc-viewrow zc-row-1">
-<td align="center"> {{ x.Olen }} </td>
-<td align="center"> {{ x.Age }} </td>
-<td align="center"> {{ x.Etsin }} </td>
-<td align="center"> {{x.Datetime }}</td>
-<td align="center"> {{x.Paikka }}</td>
-<td align="center"> {{x.Kuvaus }}</td>
+<td align="center"> {{x.Olen}} </td>
+<td align="center"> {{x.Age}} </td>
+<td align="center"> {{x.Etsin}} </td>
+<td align="center"> {{x.Datetime}}</td>
+<td align="center"> {{x.Paikka}}</td>
+<td align="center"> {{x.Kuvaus}}</td>
 
 <td align="center">
 	<script type="text/javascript">
