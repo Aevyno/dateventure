@@ -16,22 +16,17 @@ from dateventure import palaute
 class MainPage(webapp.RequestHandler):
     def get(self):
         user = users.get_current_user()
-        global ilmoitus_Olen
+        #wtf is this global ilmoitus_olen
+        ilmoitusVar = ilmoitus.gql("WHERE Vastattu = :y AND Poistettu = :y", y = False)
+        records = ilmoitusVar.fetch(limit=10)
+        
         if user:
-            template_values={
-				'Olen': alignment ,
-                "nickname":user.nickname(),
-                "url":users.create_logout_url("/")
-            }
-            theHtmlPage='etusivu.html'
+          template_values={'records': records, "url":users.create_logout_url("/")}
         else:
-            template_values={
-                "loginurl":users.create_login_url("/")
-            }
-            theHtmlPage='etusivu.html'
-
-        path = os.path.join(os.path.dirname(__file__),theHtmlPage)
-        self.response.out.write(template.render(path,template_values))
+          template_values={'records': records, "loginurl":users.create_login_url("/")}
+        
+        path = os.path.join(os.path.dirname(__file__),'mainpage.html')
+        self.response.out.write(template.render(path,template_values))    
 
 class Showetusivu(webapp.RequestHandler):
     def get(self):
